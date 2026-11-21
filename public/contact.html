@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — Arabic Step for Life Organization, Inc.</title>
+<meta name="description" content="Get in touch with Arabic Step for Life — questions about programs, volunteering, partnerships, or support.">
+<meta name="theme-color" content="#115759">
+<link rel="icon" type="image/png" href="/assets/logo/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script src="/js/api.js" defer></script>
+<script src="/js/layout.js" defer></script>
+<script src="/js/main.js" defer></script>
+</head>
+<body>
+<div id="site-header"></div>
+<main id="main-content">
+  <section class="hero" aria-labelledby="page-title">
+    <div class="hero__media"><img src="/assets/images/map-placeholder.svg" alt="Illustration of a map with a location pin"></div>
+    <div class="container hero__inner"><div class="hero__content">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/index.html">Home</a></li><li aria-current="page">Contact Us</li></ol></nav>
+      <h1 id="page-title">Contact Us</h1>
+      <p class="hero__lead">We would love to hear from you — whether you need support, want to volunteer, or have a question.</p>
+    </div></div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="split" style="align-items:start">
+        <div>
+          <h2>Reach out</h2>
+          <p>Use the form, and our team will get back to you as soon as possible. For program applications, please <a href="/register.html">create an account</a> and apply through the program page — that is the fastest way to get help.</p>
+          <div class="card feature-card mt-3">
+            <div class="feature-icon icon-teal" aria-hidden="true"><img class="icon" src="/assets/icons/pin.svg" alt=""></div>
+            <h3>Address</h3>
+            <p class="placeholder-note">[Placeholder — address to be provided by the organization]</p>
+          </div>
+          <div class="card feature-card mt-3">
+            <div class="feature-icon icon-orange" aria-hidden="true"><img class="icon" src="/assets/icons/phone.svg" alt=""></div>
+            <h3>Phone</h3>
+            <p class="placeholder-note">[Placeholder — phone]</p>
+          </div>
+          <div class="card feature-card mt-3">
+            <div class="feature-icon icon-green" aria-hidden="true"><img class="icon" src="/assets/icons/mail.svg" alt=""></div>
+            <h3>Email</h3>
+            <p class="placeholder-note">[Placeholder — email]</p>
+          </div>
+        </div>
+        <div class="form-card">
+          <h3>Send us a message</h3>
+          <div id="contact-alert" class="alert hidden" role="alert"></div>
+          <form id="contact-form" novalidate>
+            <div class="form-group">
+              <label for="name">Your name <span class="req">*</span></label>
+              <input type="text" id="name" required autocomplete="name">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">Email <span class="req">*</span></label>
+                <input type="email" id="email" required autocomplete="email">
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone (optional)</label>
+                <input type="tel" id="phone" autocomplete="tel">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject <span class="req">*</span></label>
+              <input type="text" id="subject" required placeholder="e.g. Volunteering, Partnership, Program question">
+            </div>
+            <div class="form-group">
+              <label for="message">Your message <span class="req">*</span></label>
+              <textarea id="message" required placeholder="How can we help?"></textarea>
+            </div>
+            <button class="btn btn-teal btn-block" type="submit">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script>
+  // Prefill subject from ?subject= (e.g. volunteer/partner links)
+  document.addEventListener('DOMContentLoaded', () => {
+    const s = new URLSearchParams(window.location.search).get('subject');
+    if (s) { const el = document.getElementById('subject'); if (el) el.value = s; }
+  });
+</script>
+</body>
+</html>

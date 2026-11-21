@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Program Details — Arabic Step for Life Organization, Inc.</title>
+<meta name="description" content="Learn about this program and apply online.">
+<meta name="theme-color" content="#115759">
+<link rel="icon" type="image/png" href="/assets/logo/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script src="/js/api.js" defer></script>
+<script src="/js/layout.js" defer></script>
+<script src="/js/main.js" defer></script>
+</head>
+<body>
+<div id="site-header"></div>
+<main id="main-content">
+  <section class="section">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/index.html">Home</a></li><li><a href="/programs.html">Our Programs</a></li><li aria-current="page">Program Details</li></ol></nav>
+    </div>
+    <div class="container" id="program-detail">
+      <p class="loading"><span class="spinner dark"></span> Loading program details…</p>
+    </div>
+  </section>
+
+  <section class="section section-soft" id="apply-section">
+    <div class="container">
+      <div class="sec-head" id="apply">
+        <p class="kicker">Apply Now</p>
+        <h2>Apply for this program</h2>
+        <p>Tell us a little about yourself and what you need. Our team reviews every application with care.</p>
+      </div>
+      <div class="form-card wide mt-4">
+        <div id="apply-alert" class="alert hidden" role="alert"></div>
+        <div id="apply-login-gate" class="hidden"></div>
+        <form id="apply-form" class="hidden" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="applicantFirstName">First name <span class="req">*</span></label>
+              <input type="text" id="applicantFirstName" required autocomplete="given-name">
+            </div>
+            <div class="form-group">
+              <label for="applicantLastName">Last name <span class="req">*</span></label>
+              <input type="text" id="applicantLastName" required autocomplete="family-name">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="applicantEmail">Email <span class="req">*</span></label>
+              <input type="email" id="applicantEmail" required autocomplete="email">
+            </div>
+            <div class="form-group">
+              <label for="applicantPhone">Phone (optional)</label>
+              <input type="tel" id="applicantPhone" autocomplete="tel">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="details">Tell us about your situation <span class="req">*</span></label>
+            <textarea id="details" required placeholder="Share anything that will help us understand your situation and how we can best support you."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="needs">Specific needs or requests (optional)</label>
+            <textarea id="needs" style="min-height:80px" placeholder="For example: language support, transportation, specific times you are available…"></textarea>
+          </div>
+          <p class="form-hint">Your information is kept private and used only to review and respond to your application.</p>
+          <button class="btn btn-teal btn-block mt-2" type="submit">Submit Application</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+</body>
+</html>

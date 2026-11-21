@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Verification — Arabic Step for Life Organization, Inc.</title>
+<meta name="description" content="Verify your email address for your Arabic Step for Life account.">
+<meta name="theme-color" content="#115759">
+<link rel="icon" type="image/png" href="/assets/logo/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script src="/js/api.js" defer></script>
+<script src="/js/layout.js" defer></script>
+</head>
+<body>
+<div id="site-header"></div>
+<main id="main-content">
+  <section class="section">
+    <div class="container">
+      <div class="form-card">
+        <div class="center">
+          <span class="eyebrow">Email Verification</span>
+          <h2>Verifying your email…</h2>
+          <p class="lead">Please wait a moment while we confirm your address.</p>
+        </div>
+        <div id="verify-alert" class="alert hidden mt-3" role="alert"></div>
+        <div id="verify-actions" class="center mt-3 hidden">
+          <a href="/login.html" class="btn btn-teal">Continue to Login</a>
+          <p class="mt-3"><a href="/register.html">Create a new account</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const alertEl = document.getElementById('verify-alert');
+  const actions = document.getElementById('verify-actions');
+  const token = new URLSearchParams(window.location.search).get('token');
+  if (!token) {
+    showAlert(alertEl, 'This verification link is missing its token. Please use the full link from your verification email, or register again.', 'error');
+    actions.classList.remove('hidden');
+    return;
+  }
+  try {
+    await API.get('/api/auth/verify?token=' + encodeURIComponent(token));
+    document.querySelector('.form-card h2').textContent = 'Your email is verified!';
+    showAlert(alertEl, 'Thank you — your email address has been verified. You can now log in to your account.', 'success');
+  } catch (err) {
+    document.querySelector('.form-card h2').textContent = 'Verification did not succeed';
+    showAlert(alertEl, err.message || 'This verification link is invalid or has expired. Please register again to receive a new link.', 'error');
+  }
+  actions.classList.remove('hidden');
+});
+</script>
+</body>
+</html>

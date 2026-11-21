@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Programs — Arabic Step for Life Organization, Inc.</title>
+<meta name="description" content="Explore programs for burn survivors, newcomers, Arabic learners, and the wider community.">
+<meta name="theme-color" content="#115759">
+<link rel="icon" type="image/png" href="/assets/logo/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script src="/js/api.js" defer></script>
+<script src="/js/layout.js" defer></script>
+<script src="/js/main.js" defer></script>
+</head>
+<body>
+<div id="site-header"></div>
+<main id="main-content">
+  <section class="hero" aria-labelledby="page-title">
+    <div class="hero__media"><img src="/assets/images/skyline-sunset.svg" alt="Illustration of a city skyline and the Statue of Liberty at sunset"></div>
+    <div class="container hero__inner"><div class="hero__content">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/index.html">Home</a></li><li aria-current="page">Our Programs</li></ol></nav>
+      <h1 id="page-title">Programs That Change Lives</h1>
+      <p class="hero__lead">Support that meets you where you are — in recovery, in a new home, or in the classroom.</p>
+    </div></div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="toolbar">
+        <div class="form-group grow">
+          <label for="category-filter">Filter by category</label>
+          <select id="category-filter">
+            <option value="ALL">All Programs</option>
+            <option value="BURN_SUPPORT">Burn Support</option>
+            <option value="NEWCOMER">Newcomer Support</option>
+            <option value="ARABIC">Arabic Learning</option>
+            <option value="COMMUNITY">Community</option>
+          </select>
+        </div>
+        <p id="programs-count" class="form-hint" aria-live="polite"></p>
+      </div>
+      <div class="grid grid-3 mt-3" id="programs-list">
+        <p class="loading" style="grid-column:1/-1"><span class="spinner dark"></span> Loading programs…</p>
+      </div>
+      <p class="ph-note mt-3"><strong>Please note:</strong> Program availability, locations, and schedules may vary.</p>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container">
+      <div class="sec-head"><p class="kicker">How It Works</p><h2>Applying is simple</h2></div>
+      <div class="grid grid-3 mt-4">
+        <div class="card feature-card reveal"><div class="feature-icon icon-teal" aria-hidden="true"><img class="icon" src="/assets/icons/user.svg" alt=""></div><h3>1. Create an account</h3><p>Register in a minute with your name and email. Your account lets you apply and track your application.</p></div>
+        <div class="card feature-card reveal"><div class="feature-icon icon-orange" aria-hidden="true"><img class="icon" src="/assets/icons/clipboard.svg" alt=""></div><h3>2. Choose a program &amp; apply</h3><p>Open a program page, tell us about your situation and what you need, and submit your application.</p></div>
+        <div class="card feature-card reveal"><div class="feature-icon icon-green" aria-hidden="true"><img class="icon" src="/assets/icons/check-circle.svg" alt=""></div><h3>3. Track your progress</h3><p>You will receive a tracking code. Follow your application status from your dashboard, and message our team anytime.</p></div>
+      </div>
+      <div class="center mt-4">
+        <a class="btn btn-teal" href="/register.html">Create Your Free Account</a>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+</body>
+</html>

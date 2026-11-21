@@ -1,0 +1,194 @@
+// Prisma schema — Arabic Step for Life Organization, Inc.
+// PostgreSQL. All data lives in Postgres via Prisma; no frontend-only fakes.
+// See API_CONTRACT.md for the endpoint shapes built on these models.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum ApplicationStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum DonationStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id                       String    @id @default(cuid())
+  email                    String    @unique
+  passwordHash             String
+  firstName                String
+  lastName                 String
+  phone                    String?
+  role                     Role      @default(USER)
+  isActive                 Boolean   @default(true)
+  emailVerified            Boolean   @default(false)
+  verificationToken        String?   @unique
+  verificationTokenExpires DateTime?
+  resetToken               String?   @unique
+  resetTokenExpires        DateTime?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+
+  applications     Application[]
+  sentMessages     Message[]      @relation("SentMessages")
+  receivedMessages Message[]      @relation("ReceivedMessages")
+  notifications    Notification[]
+  auditLogs        AuditLog[]     @relation("AuditActor")
+
+  @@index([email])
+  @@map("users")
+}
+
+model Program {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  title            String
+  category         String // BURN_SUPPORT | NEWCOMER | ARABIC | COMMUNITY
+  shortDescription String
+  description      String   @db.Text
+  imageUrl         String?
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  applications Application[]
+
+  @@index([category])
+  @@map("programs")
+}
+
+model Application {
+  id                 String            @id @default(cuid())
+  trackingCode       String            @unique // e.g. ASL-2026-XXXXXX
+  userId             String
+  programId          String
+  applicantFirstName String
+  applicantLastName  String
+  applicantEmail     String
+  applicantPhone     String?
+  details            String            @db.Text
+  status             ApplicationStatus @default(PENDING)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program  Program   @relation(fields: [programId], references: [id])
+  messages Message[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([trackingCode])
+  @@map("applications")
+}
+
+model Message {
+  id            String   @id @default(cuid())
+  senderId      String
+  recipientId   String? // null = addressed to all admins (user writing to the organization)
+  applicationId String?
+  subject       String
+  body          String   @db.Text
+  isRead        Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  sender      User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient   User?        @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: SetNull)
+  application Application? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+
+  @@index([senderId])
+  @@index([recipientId])
+  @@index([applicationId])
+  @@map("messages")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String // e.g. APPLICATION_STATUS, MESSAGE, SYSTEM
+  title     String
+  body      String   @db.Text
+  link      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@map("notifications")
+}
+
+model Donation {
+  id                    String         @id @default(cuid())
+  stripeSessionId       String?        @unique
+  stripePaymentIntentId String?
+  amountCents           Int
+  currency              String         @default("usd")
+  status                DonationStatus @default(PENDING)
+  donorName             String?
+  donorEmail            String?
+  message               String?        @db.Text
+  createdAt             DateTime       @default(now())
+
+  @@index([status])
+  @@map("donations")
+}
+
+model ImpactStat {
+  id        String   @id @default(cuid())
+  key       String   @unique // peopleSupported | volunteers | statesReached
+  value     Int      @default(0)
+  label     String
+  updatedAt DateTime @updatedAt
+
+  @@map("impact_stats")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String // e.g. APPLICATION_STATUS_CHANGE, USER_ROLE_CHANGE
+  targetType String // e.g. Application, User, Program
+  targetId   String?
+  details    Json?
+  createdAt  DateTime @default(now())
+
+  actor User? @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([actorId])
+  @@index([targetType, targetId])
+  @@map("audit_logs")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([isRead])
+  @@map("contact_messages")
+}

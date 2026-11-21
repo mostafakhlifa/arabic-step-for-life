@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Arabic Step for Life Organization, Inc.</title>
+<meta name="description" content="Administration dashboard for Arabic Step for Life.">
+<meta name="theme-color" content="#115759">
+<link rel="icon" type="image/png" href="/assets/logo/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script src="/js/api.js" defer></script>
+<script src="/js/layout.js" defer></script>
+<script src="/js/admin.js" defer></script>
+</head>
+<body>
+<div id="site-header"></div>
+<main id="main-content">
+  <section class="hero hero--compact" aria-labelledby="page-title">
+    <div class="container hero__inner"><div class="hero__content hero--wide">
+      <h1 id="page-title">Admin Dashboard</h1>
+      <p class="hero__lead">Logged in as <strong id="admin-name">—</strong> · Manage applications, programs, users, donations, and site content.</p>
+    </div></div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="tabs" role="tablist" aria-label="Admin sections">
+        <button class="tab-btn active" data-tab="overview" type="button" role="tab">Overview</button>
+        <button class="tab-btn" data-tab="applications" type="button" role="tab">Applications</button>
+        <button class="tab-btn" data-tab="programs" type="button" role="tab">Programs</button>
+        <button class="tab-btn" data-tab="stats" type="button" role="tab">Impact Stats</button>
+        <button class="tab-btn" data-tab="users" type="button" role="tab">Users</button>
+        <button class="tab-btn" data-tab="donations" type="button" role="tab">Donations</button>
+        <button class="tab-btn" data-tab="messages" type="button" role="tab">Messages</button>
+        <button class="tab-btn" data-tab="search" type="button" role="tab">Global Search</button>
+        <button class="tab-btn" data-tab="audit" type="button" role="tab">Audit Log</button>
+        <button class="tab-btn" data-tab="contact" type="button" role="tab">Contact Messages</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-overview">
+        <div class="kpi-grid" id="overview-cards">
+          <p class="loading"><span class="spinner dark"></span> Loading overview…</p>
+        </div>
+        <h3>Recent Applications</h3>
+        <div id="overview-recent" class="mt-2"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-applications">
+        <h3>Applications</h3>
+        <div class="toolbar mt-2">
+          <div class="form-group grow">
+            <label for="app-search">Search (name, email, tracking code)</label>
+            <input type="text" id="app-search" placeholder="Search applications…">
+          </div>
+          <div class="form-group">
+            <label for="app-status-filter">Status</label>
+            <select id="app-status-filter">
+              <option value="">All statuses</option>
+              <option value="PENDING">Pending</option>
+              <option value="UNDER_REVIEW">Under Review</option>
+              <option value="APPROVED">Approved</option>
+              <option value="REJECTED">Rejected</option>
+              <option value="COMPLETED">Completed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="app-program-filter">Program</label>
+            <select id="app-program-filter"><option value="">All programs</option></select>
+          </div>
+          <button class="btn btn-teal" id="app-search-btn" type="button">Search</button>
+        </div>
+        <div id="admin-applications"></div>
+        <div id="app-pagination" class="mt-3"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-programs">
+        <h3>Programs</h3>
+        <div id="admin-programs" class="mt-2"></div>
+        <div class="form-card wide mt-4" style="margin:0">
+          <h3 id="program-form-title">Create New Program</h3>
+          <div id="program-alert" class="alert hidden" role="alert"></div>
+          <form id="program-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="prog-title">Title <span class="req">*</span></label>
+                <input type="text" id="prog-title" required>
+              </div>
+              <div class="form-group">
+                <label for="prog-slug">Slug <span class="req">*</span></label>
+                <input type="text" id="prog-slug" required placeholder="e.g. burn-survivor-support" pattern="[a-z0-9-]+">
+                <p class="form-hint">Lowercase letters, numbers, and hyphens only. Used in the program URL.</p>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="prog-category">Category <span class="req">*</span></label>
+                <select id="prog-category">
+                  <option value="BURN_SUPPORT">Burn Support</option>
+                  <option value="NEWCOMER">Newcomer Support</option>
+                  <option value="ARABIC">Arabic Learning</option>
+                  <option value="COMMUNITY">Community</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="prog-image">Image URL (optional)</label>
+                <input type="url" id="prog-image" placeholder="https://images.unsplash.com/photo-…">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="prog-short">Short description <span class="req">*</span></label>
+              <input type="text" id="prog-short" required maxlength="300" placeholder="One or two sentences shown on program cards.">
+            </div>
+            <div class="form-group">
+              <label for="prog-description">Full description <span class="req">*</span></label>
+              <textarea id="prog-description" required placeholder="Full program description shown on the detail page."></textarea>
+            </div>
+            <div class="checkbox-row form-group">
+              <input type="checkbox" id="prog-active" checked>
+              <label for="prog-active">Active (visible on the public site)</label>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-teal" type="submit">Save Program</button>
+              <button class="btn btn-ghost" id="prog-cancel" type="button">Cancel / New Program</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-stats">
+        <h3>Impact Statistics</h3>
+        <p class="lead">These numbers appear on the homepage impact section. Update them with real, verified figures only.</p>
+        <div class="form-card mt-3" style="margin:0">
+          <div id="stats-alert" class="alert hidden" role="alert"></div>
+          <form id="stats-form" novalidate>
+            <div class="form-group">
+              <label for="stat-people">People Supported</label>
+              <input type="number" id="stat-people" min="0" step="1" value="0">
+            </div>
+            <div class="form-group">
+              <label for="stat-volunteers">Volunteers</label>
+              <input type="number" id="stat-volunteers" min="0" step="1" value="0">
+            </div>
+            <div class="form-group">
+              <label for="stat-states">States Reached</label>
+              <input type="number" id="stat-states" min="0" step="1" value="0">
+            </div>
+            <p class="form-hint">“Core Programs” is computed automatically from the number of active programs.</p>
+            <button class="btn btn-teal" type="submit">Save Statistics</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-users">
+        <h3>User Management</h3>
+        <p class="lead">Role changes and activation controls require SUPER_ADMIN privileges.</p>
+        <div class="toolbar mt-2">
+          <div class="form-group grow">
+            <label for="user-search">Search users (name or email)</label>
+            <input type="text" id="user-search" placeholder="Search users…">
+          </div>
+          <button class="btn btn-teal" id="user-search-btn" type="button">Search</button>
+        </div>
+        <div id="admin-users"></div>
+        <div id="user-pagination" class="mt-3"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-donations">
+        <h3>Donation History</h3>
+        <p class="lead">Completed donations recorded through Stripe Checkout.</p>
+        <div id="admin-donations" class="mt-2"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-messages">
+        <h3>Send a Message to a User</h3>
+        <p class="lead">Send a message to any user — for example, to follow up on their application. Use the Message button on an application to prefill the recipient.</p>
+        <div class="form-card wide mt-3" style="margin:0">
+          <div id="admin-msg-alert" class="alert hidden" role="alert"></div>
+          <form id="admin-message-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="admin-msg-recipient">Recipient user ID <span class="req">*</span></label>
+                <input type="text" id="admin-msg-recipient" required placeholder="User ID from the Users tab">
+              </div>
+              <div class="form-group">
+                <label for="admin-msg-application">Application ID (optional)</label>
+                <input type="text" id="admin-msg-application" placeholder="Link this message to an application">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="admin-msg-subject">Subject <span class="req">*</span></label>
+              <input type="text" id="admin-msg-subject" required>
+            </div>
+            <div class="form-group">
+              <label for="admin-msg-body">Message <span class="req">*</span></label>
+              <textarea id="admin-msg-body" required></textarea>
+            </div>
+            <button class="btn btn-teal" type="submit">Send Message</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-search">
+        <h3>Global Search</h3>
+        <p class="lead">Search across users and applications by name, email, or tracking code.</p>
+        <form id="global-search-form" class="toolbar mt-2" novalidate>
+          <div class="form-group grow">
+            <label for="global-search-q">Search</label>
+            <input type="text" id="global-search-q" placeholder="Name, email, or tracking code…">
+          </div>
+          <button class="btn btn-teal" type="submit">Search</button>
+        </form>
+        <div id="global-search-results" class="mt-2"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-audit">
+        <h3>Audit Log</h3>
+        <p class="lead">A record of administrative actions taken on the platform.</p>
+        <div id="audit-logs" class="mt-2"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-contact">
+        <h3>Contact Form Messages</h3>
+        <p class="lead">Messages submitted through the public contact form.</p>
+        <div id="contact-messages" class="mt-2"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+</body>
+</html>
